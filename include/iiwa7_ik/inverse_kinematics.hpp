@@ -10,6 +10,8 @@
 #include <cmath>
 #include <iostream>
 
+namespace iiwa7_ik
+{
 constexpr int N_JOINTS = 7;
 // TODO: currently only iiwa7 is used. When other robots are required, structure should be changed.
 constexpr double l_iiwa7[] = {0.34, 0.4, 0.4, 0.126};
@@ -282,5 +284,6 @@ private:
     const double lse = l_iiwa7[1];
     const double lew = l_iiwa7[2];
 };
+} // namespace iiwa7_ik
 
 #endif // MARS_MODEL_INVERSE_KINEMATICS_HPP

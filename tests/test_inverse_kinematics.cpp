@@ -9,6 +9,8 @@
 #define PINOCCHIO_MODEL_DIR "/workspace/models/iiwa7"
 #endif
 
+using namespace iiwa7_ik;
+
 int main()
 {
     // Example usage
