@@ -11,6 +11,18 @@ endif()
 
 option(AMENT_CMAKE "Build using ament_cmake for ros2" ON)
 
+  # find dependencies
+set(THIS_PACKAGE_INCLUDE_DEPENDS
+  pinocchio
+  Eigen3
+)
+
+foreach(Dependency IN ITEMS ${THIS_PACKAGE_INCLUDE_DEPENDS})
+  find_package(${Dependency} REQUIRED)
+endforeach()
+
+include_directories(include)
+
 if(AMENT_CMAKE)
 
   if(NOT CMAKE_BUILD_TYPE)
@@ -18,18 +30,7 @@ if(AMENT_CMAKE)
   endif()
 
   # find dependencies
-  set(THIS_PACKAGE_INCLUDE_DEPENDS
-      pinocchio
-      Eigen3
-  )
-
-  include_directories(include)
-
-  # find dependencies
   find_package(ament_cmake REQUIRED)
-  foreach(Dependency IN ITEMS ${THIS_PACKAGE_INCLUDE_DEPENDS})
-    find_package(${Dependency} REQUIRED)
-  endforeach()
 
   add_library(${PROJECT_NAME} INTERFACE)
 
@@ -39,6 +40,8 @@ if(AMENT_CMAKE)
   )
 
   ament_target_dependencies(${PROJECT_NAME} INTERFACE ${THIS_PACKAGE_INCLUDE_DEPENDS})
+
+  target_compile_definitions(${PROJECT_NAME} INTERFACE "PLUGINLIB__DISABLE_BOOST_FUNCTIONS")
 
   # INSTALL
   install(
@@ -54,28 +57,12 @@ if(AMENT_CMAKE)
     INCLUDES DESTINATION include
   )
 
-  if(BUILD_TESTING)
-      add_subdirectory(tests)
-  endif()
-
   ament_export_include_directories(include)
   ament_export_targets(export_${PROJECT_NAME})
   ament_export_dependencies(${THIS_PACKAGE_INCLUDE_DEPENDS})
 
   ament_package()
 else()
-# find dependencies
-  set(THIS_PACKAGE_INCLUDE_DEPENDS
-      pinocchio
-      Eigen3
-  )
-
-  include_directories(include)
-
-  # find dependencies
-  foreach(Dependency IN ITEMS ${THIS_PACKAGE_INCLUDE_DEPENDS})
-    find_package(${Dependency} REQUIRED)
-  endforeach()
 
   add_library(${PROJECT_NAME} INTERFACE)
 
